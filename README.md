@@ -20,7 +20,7 @@ Doubly linked list is a complex type of linked list in which a node contains a p
 
 In a singly linked list, we could traverse only in one direction, because each node contains address of the next node and it doesn't have any record of its previous nodes. However, doubly linked list overcome this limitation of singly linked list. Due to the fact that, each node of the list contains the address of its previous node, we can find all the details about the previous node as well by using the previous address stored inside the previous part of each node.
 
-**3. Array**
+**3. Array**\n
 In this project, we're using array of pointers.
 
 Array and pointers are closely related to each other. In C++, the name of an array is considered às a pointer, i.e., the name of an array contains the address of an element. C++ considers the array name as the address of the first element.
