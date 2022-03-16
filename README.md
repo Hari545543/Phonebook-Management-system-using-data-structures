@@ -5,6 +5,9 @@ A project done with collaboration with my team members (*currently in progress*)
 **Problem Statement**
 In this project, we're trying to operate a Phonebook management system, with optimal time complexities for the operation given below.
 
+**Programming Language used**
+1. C++
+
 **Operations implemented(*currently in progress*)**
 1. Insertion
 2. Display
@@ -34,5 +37,3 @@ Thus, it becomes a data structure in which insertion and search operations are v
 
 Hashing is a technique to convert a range of key values into a range of indexes of an array. We're going to use modulo operator to get a range of key values
 
-**Programming Language used**
-1. C++
