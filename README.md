@@ -5,7 +5,7 @@ A project done with collaboration with my team members (*currently in progress*)
 **Problem Statement**
 In this project, we're trying to operate a Phonebook management system, with optimal time complexities for the operation given below.
 
-**Operations implemented**(*currently in progress*)
+**Operations implemented(*currently in progress*)**
 1. Insertion
 2. Display
 3. Searching(*currently in progress)
