@@ -12,7 +12,7 @@ In this project, we're trying to operate a Phonebook management system, with opt
 4. Deletion(*currently in progress)
 5. Sorting(*currently in progress)
 
-**Data Structures used**
+****Data Structures used****
 1. Doubly Linked List 
 2. Arrays
 3. Hash Table
