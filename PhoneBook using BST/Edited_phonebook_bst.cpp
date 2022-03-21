@@ -258,5 +258,5 @@ struct node *input(struct node *ne_node){
 	strcpy(ne_node -> address, address);
 	strcpy(ne_node -> email, email);
 	
-	return ne_no
+	return ne_node;
   }
