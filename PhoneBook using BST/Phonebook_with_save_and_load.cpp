@@ -307,11 +307,11 @@ void savein(struct node *head,char i){
 	fn[45] = i;
 	if(head != NULL){
 		
-		inorderinside(head -> left);
+		savein(head -> left,i);
 		ob.open(fn,ios::out | ios::app);
 		ob<<"\n"<<head -> name<<"\n"<<head -> number<<"\n"<<head -> address<<"\n"<<head -> email;
 		ob.close();
-		inorderinside(head -> right);
+		savein(head -> right,i);
 		
 	}
 }
