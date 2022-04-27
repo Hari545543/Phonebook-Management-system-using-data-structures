@@ -16,7 +16,6 @@ char address[40];
 char email[40];
 struct node *left, *right, *mid;
 };
-struct node* deleteNodecenter(struct node* root, char key[],char number[]);
 struct node* searchin(struct node* root,char name[]);
 void modify(struct node* ptr);
 void savein(struct node *head,char fn[]);
@@ -353,9 +352,9 @@ struct node* deleteNodeinside(struct node* root, char key[],char number[])
     else {
     //	if(root->mid == NULL){
 		
-    	cout<<"NAME::"<<root -> name<<endl;
-    	cout<<"NAME::"<<root -> number<<endl;
-    	cout<<"NAME::"<<root -> address<<endl;
+    	//cout<<"NAME::"<<root -> name<<endl;
+    //	cout<<"NAME::"<<root -> number<<endl;
+    	//cout<<"NAME::"<<root -> address<<endl;
     	if(strcmp(root -> number,number) == 0){
 		
     	if(root->mid != NULL){
@@ -364,6 +363,7 @@ struct node* deleteNodeinside(struct node* root, char key[],char number[])
 		strcpy(root -> number,temp  -> mid->  number);
 		strcpy(root -> address,temp  -> mid->  address);
 		strcpy(root -> email,temp  -> mid->  email);
+		deletestackpush(temp->mid);
         free(temp->mid);
 		temp -> mid = NULL;
         return root;
@@ -374,10 +374,16 @@ struct node* deleteNodeinside(struct node* root, char key[],char number[])
 			temp = root;
 			while(strcmp(temp-> mid ->number,number)!=0){
 				temp=temp->mid;
-			}
-			temp -> mid = temp -> mid -> mid;
+			}deletestackpush(temp->mid);
 			free(temp-> mid);
-			return root;
+			if(temp -> mid -> mid !=NULL){
+				temp -> mid = temp -> mid -> mid;
+			}
+			else{temp -> mid =NULL;}
+		//	deletestackpush(temp->mid);
+		//	free(temp-> mid);
+			
+			return temp;
 		}
          if (root->left == NULL) {
             temp = root->right;
@@ -420,7 +426,7 @@ struct node* deleteNodeinside(struct node* root, char key[],char number[])
     return root;
 }
 
-
+/*
 struct node* deleteNodecenter(struct node* root, char key[],char number[]){
 	
 	struct node* temp;
@@ -451,7 +457,7 @@ struct node* deleteNodecenter(struct node* root, char key[],char number[]){
 	root -> mid = deleteNodecenter(temp->mid, temp -> name,temp ->  number);
 	//free(root);
 	return root;
-}
+}*/
 
 
 
