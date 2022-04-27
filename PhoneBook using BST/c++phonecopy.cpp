@@ -16,7 +16,7 @@ char address[40];
 char email[40];
 struct node *left, *right, *mid;
 };
-
+struct node* deleteNodecenter(struct node* root, char key[],char number[]);
 struct node* searchin(struct node* root,char name[]);
 void modify(struct node* ptr);
 void savein(struct node *head,char fn[]);
@@ -33,7 +33,7 @@ void savein(struct node *head,char fn[]);
 struct node *input(struct node *);
 void deletestackpush(struct node* );
 struct node* deleteNode(struct node*root[], char key[]);
-struct node* deleteNodeinside(struct node*, char key[]);
+struct node* deleteNodeinside(struct node*, char key[],char number[]);
 struct node *findmin(struct node *tree);
 void inorder(int i);
 void inorderinside(struct node *);
@@ -46,7 +46,7 @@ struct node *insertstack = NULL,*deletestack = NULL,*head[26];
 int main(){
 struct node *n_node,*ptr;
 char ans;
-char n[30];
+char n[30],num[15];
 int hash,k =0;
 for(int i=0;i<26;i++)
     {
@@ -114,16 +114,19 @@ do{
 		case 4:
 		cout<<"ENTER THE NAME\n";
 		cin>>key;
+		cout<<"ENTER THE NUMBER\n";
+		cin>>num;
 		while(key[k] != '\0'){
 		key[k] = toupper(key[k]);
 		k++;
 		}
 		hash = int (key[0]) % 65;
-		head[hash] = deleteNodeinside(head[hash],key);
+		head[hash] = deleteNodeinside(head[hash],key,num);
 		k=0;
 		break;
 		
 		case 5:
+	
 		break;
 		
 		default:
@@ -309,34 +312,74 @@ struct node *input(struct node *ne_node){
   }
 
 
-struct node* deleteNodeinside(struct node* root, char key[])
+struct node* deleteNodeinside(struct node* root, char key[],char number[])
 {
 	struct node* temp;
 	char mob_num[15];
-	if (root== NULL)
-        return root;
- 
-/*	if(strcmp(root -> name,key) == 0){
-		if(root -> mid != NULL){
-			root->mid = deleteNodeinside(root->mid, key);
+	if (root== NULL){
+		 return root;
+	}
+    /*   
+	if(strcmp(root -> name,key) == 0){
+		if(strcmp(root -> number,number) != 0){
+			if(root ->mid-> mid != NULL){
+			root->mid = deleteNodeinside(root -> mid , key,number);
+			}
+
 		}
-		
+
+			
 	}*/
+		
     if (strcmp(root -> name,key) > 0){
-    	 root->left = deleteNodeinside(root->left, key);
+	//if(strcmp(root -> number,key) == 0){
+    	 root->left = deleteNodeinside(root->left, key,number);
+    //}
 	}
        
  
 
     else if (strcmp(root -> name,key) < 0){
-    	 root->right = deleteNodeinside(root->right, key);
+    	//if(strcmp(root -> number,key) == 0){
+    	 root->right = deleteNodeinside(root->right, key,number);
+    //}
 	}
-       
+   
+
+			
+	 
  
 
     else {
-    	if(root -> mid ==NULL){
-        if (root->left == NULL) {
+    //	if(root->mid == NULL){
+		
+    	cout<<"NAME::"<<root -> name<<endl;
+    	cout<<"NAME::"<<root -> number<<endl;
+    	cout<<"NAME::"<<root -> address<<endl;
+    	if(strcmp(root -> number,number) == 0){
+		
+    	if(root->mid != NULL){
+    		temp = findmin(root->mid);
+    	strcpy(root -> name,temp -> mid-> name);
+		strcpy(root -> number,temp  -> mid->  number);
+		strcpy(root -> address,temp  -> mid->  address);
+		strcpy(root -> email,temp  -> mid->  email);
+        free(temp->mid);
+		temp -> mid = NULL;
+        return root;
+    		
+    	}
+		}
+		if(strcmp(root -> number,number) != 0){
+			temp = root;
+			while(strcmp(temp-> mid ->number,number)!=0){
+				temp=temp->mid;
+			}
+			temp -> mid = temp -> mid -> mid;
+			free(temp-> mid);
+			return root;
+		}
+         if (root->left == NULL) {
             temp = root->right;
             deletestackpush(root);
             free(root);
@@ -348,51 +391,86 @@ struct node* deleteNodeinside(struct node* root, char key[])
             free(root);
             return temp;
         }
-       /* else if(root -> mid !=NULL){
-        	
-        	temp = root->mid;
-        	deletestackpush(root);
-            free(root);
-            return temp;
-		}*/
  
 	
         temp = findmin(root->right);
- 
+ 	    /*if(root -> mid !=NULL){
+    	temp = root -> mid;
+        deletestackpush(root);
+        free(root);
+        return temp;
+		}*/
 
         strcpy(root -> name,temp -> name);
 		strcpy(root -> number,temp ->  number);
 		strcpy(root -> address,temp ->  address);
 		strcpy(root -> email,temp ->  email);
 		
-        root->right = deleteNodeinside(root->right, temp->name);
+        root->right = deleteNodeinside(root->right, temp->name,temp ->  number);
 		deletestackpush(root);
-	}
-	else{
-		inorderinside(root);
-		cout<<"\t\tMany directory with same name exists!!\n"<<"Please enter the mobile number of the subscriber"<<endl;
-		cin>>mob_num;
-		temp = root;
-		while(strcmp(temp -> number,mob_num) != 0 && temp !=NULL){//temp -> number != mob_num && 
-			temp = temp -> mid;
-			cout<<"AA\t";
-		}
-		root->mid = deleteNodeinside(root->mid, key);
-		cout<<"Name::"<<temp -> address;
-		deletestackpush(temp);
-        //free();
-        return root;
-	}
+//}
+/*	else{
+		temp = root -> mid;
+        deletestackpush(root);
+        free(root);
+        return temp;		
+		
+	}*/
     }
     return root;
 }
 
+
+struct node* deleteNodecenter(struct node* root, char key[],char number[]){
+	
+	struct node* temp;
+	char mob_num[15];
+	if (root== NULL){
+		return root;
+	}
+    
+	if(strcmp(root -> name,key) == 0){
+		if(root -> mid != NULL){
+			if(strcmp(root -> number,key) != 0){
+				
+				root->mid = deleteNodecenter(root->mid, key,number);
+			}
+
+		}	
+	}
+
+	temp = root -> mid;
+	while(temp -> mid!=NULL){
+		temp = temp->mid;
+	}
+	cout<<"Name::::::::"<<temp ->  number<<endl;
+	strcpy(root -> name,temp -> name);
+	strcpy(root -> number,temp ->  number);
+	strcpy(root -> address,temp ->  address);
+	strcpy(root -> email,temp ->  email);
+	root -> mid = deleteNodecenter(temp->mid, temp -> name,temp ->  number);
+	//free(root);
+	return root;
+}
+
+
+
+
 struct node* findmin(struct node* tree)
 {
     struct node* node1 = tree;
-    while (node1 != NULL && node1->left != NULL)
+    if(tree -> mid ==NULL){
+	while (node1 != NULL && node1->left != NULL)
         node1 = node1->left;
     return node1;
+    	
+	}
+	else if(tree -> mid !=NULL){
+		while (node1 != NULL && node1->mid ->mid!= NULL)
+        node1 = node1->mid;
+    return node1;
+	}
+
 }
 
 void insertstackpush(struct node* temp){
@@ -567,7 +645,7 @@ strcpy(ptr1->email,ptr->email);
 
 head[hash1] = insertinside(head[hash1], ptr1);
 print();
-head[hash] = deleteNodeinside(head[hash],ptr -> name);
+head[hash] = deleteNodeinside(head[hash],ptr -> name,ptr -> number);
 print();
 
 cout<<"\n\nNAME:::::"<<ptr1 -> name<<endl;
