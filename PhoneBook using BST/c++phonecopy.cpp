@@ -24,10 +24,11 @@ void gosave();
 void insertstackpush(struct node* temp);
 void load();
 struct node* pop(struct node*stack);
-
+//void display();
+void display();
 void print();
 void save();
-
+//void savetofile(char i,int hash);
 void savein(struct node *head,char fn[]);
 struct node *input(struct node *);
 void deletestackpush(struct node* );
@@ -36,11 +37,10 @@ struct node* deleteNodeinside(struct node*, char key[]);
 struct node *findmin(struct node *tree);
 void inorder(int i);
 void inorderinside(struct node *);
-
+//struct node *insert(struct node *head[],struct node *new_node);
 struct node *insertinside(struct node *,struct node *);
 struct node *findmin(struct node *tree);
 struct node *insertstack = NULL,*deletestack = NULL,*head[26];
-
 
 
 int main(){
@@ -68,7 +68,7 @@ do{
 			do{	
 				n_node = input(n_node);
 				hash = int(n_node->name[0]) % 65;
-				strcpy(n,n_node->name);
+				//strcpy(n,n_node->name);
 				insertstackpush(n_node);
 				head[hash] = insertinside(head[hash],n_node);
 				cout<<"\nCONTINUE ? (y/n)\t";
@@ -128,6 +128,7 @@ do{
 		
 		default:
 		cout<<"ENTER VALID CHOICE\n";
+		break;
 	
 	}
 	
@@ -146,19 +147,34 @@ struct node *insertinside(struct node *head,struct node *new_node)
 		new_node -> left = NULL;
 		new_node -> right = NULL;
 		head = new_node;
+		//insertstackpush(new_node);
 	}
 	else
 	{
 		
 
 	
-		if(strcmp(head -> name, new_node -> name) > 0)
+
+		if(strcmp(head -> name, new_node -> name) == 0)
+		{
+			if(strcmp(head -> number, new_node -> number) == 0){
+				cout<<"\n\t\tAlready exist!!!!"<<endl;
+			}
+			else{
+				head -> mid = insertinside(head -> mid, new_node);
+				//insertstackpush(new_node);
+			}
+			
+		}	
+		else if(strcmp(head -> name, new_node -> name) > 0)
 		{
 			head -> left = insertinside(head -> left, new_node);
+			//insertstackpush(new_node);
 		}
 		else
 		{
 			head -> right = insertinside(head -> right, new_node);
+			//insertstackpush(new_node);
 		}
 	}
 	return head;
@@ -168,12 +184,12 @@ struct node *insertinside(struct node *head,struct node *new_node)
 
 void print()
 {	
-	
+	//cout<<"printing ";
 	for(int i =0;i<=26;i++){
 		if(head[i] == NULL){ continue;}
 		if(head[i] != NULL){
 			inorderinside(head[i]);
-		
+			//inorder(i);
 		}
 	}
 }
@@ -190,7 +206,7 @@ void inorderinside(struct node *head)
 		cout<<"\nNUMBER :  "<< head -> number;
 		cout<<"\nADDRESS :  "<< head -> address;
 		cout<<"\nE-MAIL :  "<< head -> email;		
-		
+		inorderinside(head -> mid);
 		inorderinside(head -> right);
 	}
 
@@ -213,7 +229,7 @@ int hash ;
 	for(char i = 'A'; i <= 'Z' ; ++i){
 		fn[45] = i;
 		hash = int(i) % 65;
-	
+		//cout<< fn<< endl;
 	fstream ob(fn);
 	while(!ob.eof()){
 		ob.getline(c, 40);
@@ -227,7 +243,7 @@ int hash ;
 			strcpy(email, c);
 	
 			new__node = (struct node*)malloc(sizeof(struct node));
-		
+			//cout<< name<<endl;
 			strcpy(new__node -> name, name);
 			strcpy(new__node -> number, number);
 			strcpy(new__node -> address, address);
@@ -248,13 +264,13 @@ struct node *input(struct node *ne_node){
 	char address[40];
 	char email[40];
 	int k = 0;
-	
+	//cout<<"\nENTER NAME  :  ";  
 	cin.getline(name,30);
 	
 	
 	while((strlen(name)==0)){
 																						
-		cout<<"\nENTER NAME  : ";
+		cout<<"\nENTER VALID NAME  : ";
 		cin.getline(name, 30);
 			
 			
@@ -274,11 +290,11 @@ struct node *input(struct node *ne_node){
 	   }
 	   
 			
-		
+	//cout<<number<<endl;	
 	  cout<<"\nENTER ADDRESS :  ";
 	   cin.getline(address,40); 
 	   
-	
+	//cout<<number<<endl;
 	   cout<<"\nENTER E-MAIL :  ";
 	   cin.getline(email,40);
 	   
@@ -293,14 +309,19 @@ struct node *input(struct node *ne_node){
   }
 
 
-
 struct node* deleteNodeinside(struct node* root, char key[])
 {
 	struct node* temp;
+	char mob_num[15];
 	if (root== NULL)
         return root;
  
-
+/*	if(strcmp(root -> name,key) == 0){
+		if(root -> mid != NULL){
+			root->mid = deleteNodeinside(root->mid, key);
+		}
+		
+	}*/
     if (strcmp(root -> name,key) > 0){
     	 root->left = deleteNodeinside(root->left, key);
 	}
@@ -314,7 +335,7 @@ struct node* deleteNodeinside(struct node* root, char key[])
  
 
     else {
-    	
+    	if(root -> mid ==NULL){
         if (root->left == NULL) {
             temp = root->right;
             deletestackpush(root);
@@ -327,8 +348,15 @@ struct node* deleteNodeinside(struct node* root, char key[])
             free(root);
             return temp;
         }
+       /* else if(root -> mid !=NULL){
+        	
+        	temp = root->mid;
+        	deletestackpush(root);
+            free(root);
+            return temp;
+		}*/
  
-
+	
         temp = findmin(root->right);
  
 
@@ -339,6 +367,22 @@ struct node* deleteNodeinside(struct node* root, char key[])
 		
         root->right = deleteNodeinside(root->right, temp->name);
 		deletestackpush(root);
+	}
+	else{
+		inorderinside(root);
+		cout<<"\t\tMany directory with same name exists!!\n"<<"Please enter the mobile number of the subscriber"<<endl;
+		cin>>mob_num;
+		temp = root;
+		while(strcmp(temp -> number,mob_num) != 0 && temp !=NULL){//temp -> number != mob_num && 
+			temp = temp -> mid;
+			cout<<"AA\t";
+		}
+		root->mid = deleteNodeinside(root->mid, key);
+		cout<<"Name::"<<temp -> address;
+		deletestackpush(temp);
+        //free();
+        return root;
+	}
     }
     return root;
 }
@@ -363,7 +407,7 @@ void insertstackpush(struct node* temp){
 	insertstack = newnode;
 	
 }
-/*
+
 void display() {
    struct node* ptr;
    if(insertstack==NULL)
@@ -377,7 +421,7 @@ void display() {
       }
    }
 }
-*/
+
 void deletestackpush(struct node* temp){
 	struct node* newnode;
 	newnode = (struct node*) malloc(sizeof(struct node));
@@ -434,6 +478,7 @@ struct node* pop(struct node*stack) {
 	  return stack;
 }
 }
+
 
 
 
@@ -521,7 +566,11 @@ strcpy(ptr1->number,ptr->number);
 strcpy(ptr1->email,ptr->email);
 
 head[hash1] = insertinside(head[hash1], ptr1);
+print();
 head[hash] = deleteNodeinside(head[hash],ptr -> name);
+print();
+
+cout<<"\n\nNAME:::::"<<ptr1 -> name<<endl;
 deletestackpush(ptr1);
 deletestackpush(ptr);
 break;
