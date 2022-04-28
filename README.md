@@ -1,6 +1,6 @@
 # Phonebook-Management-system-using-data-structures
 
-A project done with collaboration with my team members (*currently in progress*)
+A project done in collaboration with my team members.
 
 **Problem Statement**
 In this project, we're trying to operate a Phonebook management system, with optimal time complexities for the operation given below.
